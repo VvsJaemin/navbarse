@@ -29,10 +29,10 @@ function Navbar() {
       result.push(SidebarData[i].title);
       return <div className="navbar">
       <Link to="/express" className="menu-bars" style={{ color : "white", display : "flex", marginLeft : "300px"}}>
-            <BsIcons.BsPersonBoundingBox />{result[0]}
+            <BsIcons.BsPersonBoundingBox />{SidebarData[0].title}  <Link to="" className="menu-bars"> <AiIcons.AiOutlineClose onClick={()=>setCloseBtn(true)} /></Link>
       </Link>
-      <Link to="/order" className="menu-bars" style={{ color : "white", display : "flex", marginLeft : "300px"}}>
-            <BsIcons.BsPersonBoundingBox />{result[1]}
+      <Link to="/order" className="menu-bars" style={{ color : "white", display : "flex"}}>
+            <BsIcons.BsPersonBoundingBox />{SidebarData[1].title}  <Link to="" className="menu-bars"> <AiIcons.AiOutlineClose onClick={()=>setCloseBtn(true)} /></Link>
       </Link>
     </div>
   }
@@ -75,11 +75,16 @@ function Navbar() {
       {/* 아이콘 컬러 전체 변경 기능 */}
       <IconContext.Provider value={{ color: '#fff' }}>
         {/* 네비게이션 토글 코드*/}   
-            {/* {display >= 0  && !closeBtn ?  sss() : <><div className="navbar"></div></>} */}
-         <div className='navbar'>
-            {btn2()}  <Link to="" className="menu-bars"> <AiIcons.AiOutlineClose onClick={()=>setCloseBtn(true)} /></Link>
+            {display >= 0  && !closeBtn ?  btn2() : <><div className="navbar"></div></>}
+         {/* <div className='navbar'>
+         <Link to="/express" className="menu-bars" style={{ color : "white", display : "flex", marginLeft : "300px"}}>
+            <BsIcons.BsPersonBoundingBox />{SidebarData[0].title}  <Link to="" className="menu-bars"> <AiIcons.AiOutlineClose onClick={()=>setCloseBtn(true)} /></Link>
+          </Link>
+        <Link to="/order" className="menu-bars" style={{ color : "white", display : "flex"}}>
+            <BsIcons.BsPersonBoundingBox />{SidebarData[1].title}  <Link to="" className="menu-bars"> <AiIcons.AiOutlineClose onClick={()=>setCloseBtn(true)} /></Link>
+          </Link>
         </div>
-            
+             */}
 
         <nav className= 'nav-menu active'>
           <ul className="nav-menu-items">
@@ -92,7 +97,7 @@ function Navbar() {
                 <li key={index} className={item.cName}>
                   <Link to={item.path} >
                     {item.icon}
-                    <span style={{color: "white" , cursor:"pointer" }} 
+                    <span style={{color: "white" , cursor:"pointer" }} onClick={()=>btn(index)} 
                     >{item.title}</span>
                  </Link>
                 </li>
