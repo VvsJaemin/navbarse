@@ -1,111 +1,88 @@
-import React, { useState, useReducer, useRef } from 'react';
-import * as FaIcons from 'react-icons/fa';
-import * as AiIcons from 'react-icons/ai';
-import { Link } from 'react-router-dom';
-import { SidebarData } from './SidebarData';
-import * as BsIcons from 'react-icons/bs';
-import './Navbar.css';
+import React, { useState, useReducer, useRef } from "react";
+import * as FaIcons from "react-icons/fa";
+import * as AiIcons from "react-icons/ai";
+import { Link } from "react-router-dom";
+import { SidebarData } from "./SidebarData";
+import * as BsIcons from "react-icons/bs";
+import "./Navbar.css";
 /* 아이콘 컬러 전체 변경 기능 */
-import { IconContext } from 'react-icons';
-import Express from '../pages/Express';
-import Order from '../pages/Order';
+import { IconContext } from "react-icons";
+import Express from "../pages/Express";
+import Order from "../pages/Order";
 
 function Navbar() {
-  const [sidebar, setSidebar] = useState(false);
-  const showSidebar = () => setSidebar(!sidebar);
 
-  const [display, setDisplay] = useState()
-  const [closeBtn , setCloseBtn] = useState(false)
+  const [navbarView, setNavbarView] = useState([]);
 
-  const btn =(index) =>{
-    setCloseBtn(false)
-    setDisplay(index)
-  }
-  const btn2 =()=>{
-    
-  const result = [];
-  var i;
-  for(i=0; i<=SidebarData.length; i++){
-      result.push(SidebarData[i].title);
-      return <div className="navbar">
-      <Link to="/express" className="menu-bars" style={{ color : "white", display : "flex", marginLeft : "300px"}}>
-            <BsIcons.BsPersonBoundingBox />{SidebarData[0].title}  <Link to="" className="menu-bars"> <AiIcons.AiOutlineClose onClick={()=>setCloseBtn(true)} /></Link>
-      </Link>
-      <Link to="/order" className="menu-bars" style={{ color : "white", display : "flex"}}>
-            <BsIcons.BsPersonBoundingBox />{SidebarData[1].title}  <Link to="" className="menu-bars"> <AiIcons.AiOutlineClose onClick={()=>setCloseBtn(true)} /></Link>
-      </Link>
-    </div>
-  }
- 
-  }
-
-  const sss = () =>{ 
-
-    switch(display){
-      case 0 : return  <>
-      <div className="navbar">
-        <Link to="/express" className="menu-bars" style={{ color : "white", display : "flex", marginLeft : "300px"}}>
-              <BsIcons.BsPersonBoundingBox />특송
-           <Link to="" className="menu-bars"> <AiIcons.AiOutlineClose onClick={()=>setCloseBtn(true)} /></Link>
-        </Link>
-        
-      </div>
-      <Express />
-       </>
-      ;
-      case 1 : return  <>
-      <div className="navbar">
-        <Link to="/order" className="menu-bars" style={{ color : "white", display : "flex", marginLeft : "300px"}}>
-              <BsIcons.BsPersonBoundingBox />주문
-           <Link to="" className="menu-bars"> <AiIcons.AiOutlineClose onClick={()=>setCloseBtn(true)} /></Link>
-        </Link>
-      </div>
-      <Order/>
-       </>
-      ;
-
-      default:
-      return <></>
+  // push Func
+  const handleClick = (item) => {
+    const isDup = navbarView.filter((val) => val.id === item.id);
+    if (isDup.length === 0) {
+      setNavbarView((prev) => [...prev, item]);
     }
-  }
+  };
+  // delete Func
+  const handleDelete = (id) => {
+    const filteredItem = navbarView.filter((item) => item.id !== id);
+    setNavbarView(filteredItem);
+  };
+
+  // view variable
+  const navbar = navbarView.map((item) => {
+    console.log("item", item);
+    return (
+      <div className="menu-bars" key={item.id} style={{ color: "white" }}>
+      <Link to={item.path} style={{color :"white"}}>
+        {item.icon}
+        {item.title}
+      </Link>  
+      <Link to="" style={{marginLeft : "5px"}}>
+        <AiIcons.AiOutlineClose onClick={() => handleDelete(item.id)} />
+      </Link>
+      </div>
+    );
+    
+  });
+  console.log("navbarView" ,navbarView[0]?.path);
 
   return (
     <>
-
       {/* 아이콘 컬러 전체 변경 기능 */}
-      <IconContext.Provider value={{ color: '#fff' }}>
-        {/* 네비게이션 토글 코드*/}   
-            {display >= 0  && !closeBtn ?  btn2() : <><div className="navbar"></div></>}
-         {/* <div className='navbar'>
-         <Link to="/express" className="menu-bars" style={{ color : "white", display : "flex", marginLeft : "300px"}}>
-            <BsIcons.BsPersonBoundingBox />{SidebarData[0].title}  <Link to="" className="menu-bars"> <AiIcons.AiOutlineClose onClick={()=>setCloseBtn(true)} /></Link>
-          </Link>
-        <Link to="/order" className="menu-bars" style={{ color : "white", display : "flex"}}>
-            <BsIcons.BsPersonBoundingBox />{SidebarData[1].title}  <Link to="" className="menu-bars"> <AiIcons.AiOutlineClose onClick={()=>setCloseBtn(true)} /></Link>
-          </Link>
+      <IconContext.Provider value={{ color: "#fff" }}>
+        {/* 네비게이션 토글 코드*/}
+        <div className="navbar" style={{ marginLeft: "250px" }}>
+          {navbarView.length > 0 ? navbar : <div className="navbar"></div>}
         </div>
-             */}
-
-        <nav className= 'nav-menu active'>
+        <nav className="nav-menu active">
           <ul className="nav-menu-items">
-
-    
-            
             {/* SidebarData를 순서대로 담기*/}
-            {SidebarData.map((item, index) => {
+            {SidebarData.map((item) => {
               return (
-                <li key={index} className={item.cName}>
-                  <Link to={item.path} >
-                    {item.icon}
-                    <span style={{color: "white" , cursor:"pointer" }} onClick={()=>btn(index)} 
-                    >{item.title}</span>
-                 </Link>
+                <li key={item.id} className={item.cName}>
+                  <Link to={item.path} onClick={() => handleClick(item)}>
+                  {item.icon}
+                  <span style={{ color: "white", cursor: "pointer" }}>
+                    {item.title}
+                  </span>
+                  </Link>
                 </li>
+                
               );
             })}
+
           </ul>
         </nav>
       </IconContext.Provider>
+      {/* <div style={{display :"none"}}> <Order style={{ marginLeft : "500px"}}/> </div> */}
+
+      {SidebarData[0].id ==1 ? <Express style={{ marginLeft : "500px"}}/> :<></>}
+     {SidebarData[1].id ==2 ? <Order style={{ marginLeft : "500px"}}/>  :<></>}
+
+
+
+            
+
+
     </>
   );
 }

@@ -7,6 +7,7 @@ export const SidebarData = [
     path: '/express',
     icon: <BsIcons.BsPersonBoundingBox />,
     cName: 'nav-text'
+    
   },
   {
     id : 2,

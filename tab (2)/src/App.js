@@ -8,9 +8,8 @@ function App() {
     <Router>
       <Navbar />
       <Routes>
-        <Route path="/express" exact component={Express} />
-        <Route path="/order" exact component={Order} />
-
+        <Route path="/express" exact={true} component={Express} />
+        <Route path="/order" exact={true} component={Order} />
       </Routes>
     </Router>
   );
